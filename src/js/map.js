@@ -1,4 +1,5 @@
  let map = {
+
   key: "AIzaSyClUt1HHvi5XFKUcXfYx6QwBl6ktpz6_Ww", 
 
   initMapOptions: {
@@ -23,13 +24,11 @@
 
   init: function () {
     let options = map.initMapOptions;
-    console.log(options);
     map.map = new google.maps.Map(document.querySelector('#map'), options);
     map.addPoints(map.data);
   },
 
   addPoints: function(points){
-    console.log('points: ', points);
     let heatmapData = [];
     for(var i = 0; i < points[0].data.length; i++ ){
       heatmapData.push(new google.maps.LatLng( points[0].data[i][0], points[0].data[i][1]));
@@ -41,6 +40,6 @@
     heatmap.setMap(map.map);
   }
 
-}
+};
 
 module.exports = map;

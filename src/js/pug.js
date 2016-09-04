@@ -1,13 +1,13 @@
 module.exports = {
 
-  race: function(data){
-    let template = require('./../pug/race.pug');
+  activity: function(data){
+    let template = require('./../pug/activity.pug');
     return template(data);
   },
 
-  races: function(data){
+  activities: function(data){
     let ul = '<ul>'
-    let template = require('./../pug/race.pug');
+    let template = require('./../pug/activity.pug');
     for(var i = 0; i < data.length; i ++ ){
       ul = ul + template(data[i]);
     }
