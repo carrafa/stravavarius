@@ -6,11 +6,10 @@ class Song {
   }
 
   createNotes(points) {
-
     for( let i = 0; i < points.length; i++ ){
-      this.notes.push(this.createNote(points[i]));
+      let note = this.convertLatToNote(points[i]);
+      this.notes.push(this.createNote(note));
     }
-
   }
 
   createNote(num){
@@ -20,7 +19,7 @@ class Song {
   playSong(){
     for( var i = 0; i < this.notes.length; i++ ){
       let note = this.notes[i];
-      this.playNote(note, i * 200, 200);
+      this.playNote(note, i * 180, 180);
     }
   }
 
@@ -38,6 +37,12 @@ class Song {
         }, noteLength);
       }, delay)
     }
+  }
+
+  convertLatToNote(lat){
+    let l = lat.toString();
+    let n = l.substr(l.length - 3, l.length);
+    return parseInt(n);
   }
 
 }

@@ -1,5 +1,4 @@
-const map = require('./map.js');
-const nav = require('./nav.js')(map);
+const nav = require('./nav.js')
 const Song = require('./song.js');
 
 document.addEventListener('DOMContentLoaded', function(){
@@ -9,10 +8,11 @@ document.addEventListener('DOMContentLoaded', function(){
   document.querySelector('#athlete').addEventListener('click', nav.athlete);
   document.querySelector('#activities').addEventListener('click', nav.activities);
   nav.activities();
-  
+  introSong();
+ });
+
+function introSong(){ 
   let song = new Song([800, 610, 420, 830, 640, 450, 860, 670, 340]);
-
   song.playSong();
-});
-
+}
 
