@@ -11,7 +11,7 @@ class Song {
   }
 
   createMelody(points) {
-    let scale = Scales.getScale('major', 'D');
+    let scale = Scales.getScale('phrygian', 'D');
     for( let i = 0; i < points.length; i++ ){
       let note = this.convertLatToNote(points[i]);
       let freq = scale[Math.floor(Math.random()*scale.length)];// ok, random for now just to make sure scales are working
