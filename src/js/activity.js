@@ -1,37 +1,18 @@
 const Song = require('./song.js');
+let loadMap = require('./map.js');
 
 class Activity {
 
   constructor(data){
     this.data = data;
     this.latLngs = this.getLatLngs(data);
-    this.map;
     this.marker;
-    this.key = "AIzaSyClUt1HHvi5XFKUcXfYx6QwBl6ktpz6_Ww";
+    this.song;
     this.mapOptions = {
       center: this.latLngs[0],
       zoom: 15
     };
-    this.loadMap();
-  }
-
-  loadMap (){
-    let mapEl = document.createElement('div');
-    mapEl.id = 'map';
-    document.querySelector('#content > .panel.right').appendChild(mapEl);
-    let self = this;
-    google.load('maps', '3', {
-      'other_params': 'key=' + self.key + '&libraries=visualization',
-      'callback': self.initMap.bind(self)
-    });
-  }
- 
-  initMap () {
-    let options = this.mapOptions;
-    this.map = new google.maps.Map(document.querySelector('#map'), options);
-    this.addPoints(this.latLngs);
-    this.marker = this.addMarker(options.center);
-    this.playSong();
+    loadMap(this.mapOptions);
   }
 
   addPoints (points){
@@ -49,16 +30,17 @@ class Activity {
 
   playSong (){
     let songData = this.getSongData(this.data);
-    let song = new Song(songData);
-    song.playSong();
-    for(let i = 0; i < this.latLngs.length; i++ ){
-      this.markerIterator(this.latLngs[i], i * 180);
-    }
+    this.song = new Song(songData);
+    this.song.playSong();
+    //for(let i = 0; i < this.latLngs.length; i++ ){
+      //this.markerIterator(this.latLngs[i], i * 180);
+    //}
   }
 
   markerIterator(latLng, delay){
     let marker = this.marker
-    let ll = new google.maps.LatLng(latLng);
+    //let ll = new google.maps.LatLng(latLng);
+    let ll = latLng;
     if(delay === 0 ){
       marker.setPosition(ll);
     } else {
@@ -93,6 +75,10 @@ class Activity {
       });
     }
     return a;
+  }
+
+  stopSong(){
+    this.song.stop();
   }
 
 }

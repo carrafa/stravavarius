@@ -21,7 +21,7 @@ let nav = {
     if(e) { e.preventDefault(); }
     get('/api/strava/activities', function(data){
       document.querySelector('#content > .panel.left').innerHTML = pug.activities(data);
-      document.querySelectorAll('.stream').forEach((link) => {
+      document.querySelectorAll('.play').forEach((link) => {
         link.addEventListener('click', nav.loadStream);
       });
     });
@@ -37,10 +37,16 @@ let nav = {
   loadStream: function(e){
     e.preventDefault();
     let id = e.target.getAttribute('data-id');
+    let stopButton = e.target.nextSibling;
     get('/api/strava/stream/' + id, function(data){
-      console.log(data);
+
       let activity = new Activity(data);
       activity.playSong();
+
+      stopButton.addEventListener('click', function(e){
+        e.preventDefault();
+        activity.stopSong();
+      });
     });
   }
 
