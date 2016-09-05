@@ -1,4 +1,5 @@
 const Song = require('./song.js');
+const api = require('./api.js');
 let map;
 
 class Activity {
@@ -41,7 +42,7 @@ class Activity {
     this.path.setMap(map);
   }
 
-  playSong (){
+  playSong(){
     let songData = this.getSongData(this.data);
     this.song = new Song(songData);
     this.song.playSong();
@@ -62,9 +63,15 @@ class Activity {
 
   dropMarker(latLng){
     let ll = new google.maps.LatLng(latLng.lat, latLng.lng);
+    let image = {};
+    image.url = this.athlete.profile;
+    image.size = new google.maps.Size(30, 30);
+    image.scaledSize = new google.maps.Size(30, 30);
+    console.log('image', image);
     this.marker = new google.maps.Marker({
       position: ll,
-      map: map
+      map: map,
+      icon: image
     });
   }
 
@@ -117,7 +124,11 @@ class Activity {
     let options = this.mapOptions;
     map = new google.maps.Map(document.querySelector('#map'), options);
     this.drawRoute();
-    this.markerIterator();
+    let self = this;
+    api.getAthlete(function(data){
+      self.athlete = data;
+      self.markerIterator();
+    });
   }
 }
 
