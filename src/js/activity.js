@@ -56,8 +56,11 @@ class Activity {
     this.dropMarker(this.latLngs[0]);
     let self = this;
     let id = window.setInterval(function(){
+      if( self.song.index >= self.latLngs.length -1 ){
+        console.log('song over');
+        clearInterval(id);
+      }
       self.moveMarker(self.latLngs[self.song.index]);
-      console.log(self.song.index);
     }, 100);
   }
 

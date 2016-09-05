@@ -1,4 +1,5 @@
 let Tone = require('tone');
+let Scales = require('./scales.js');
 
 class Song {
 
@@ -10,11 +11,25 @@ class Song {
   }
 
   createMelody(points) {
+    let scale = Scales.getScale('major', 'D');
     for( let i = 0; i < points.length; i++ ){
       let note = this.convertLatToNote(points[i]);
-      this.melody.push({freq: note, dur: 200});
+      let freq = scale[Math.floor(Math.random()*scale.length)];// ok, random for now just to make sure scales are working
+      this.melody.push({freq: freq, dur: 200});
     }
     this.createSynth(this.melody[0]);
+  }
+
+  findClosestNote(note, array){
+    let diff = 10000;
+    let returnNote = note;
+    for(let i = 0; i < array.length; i++ ){
+      let newDiff = Math.abs(array[i] - note);
+      if( newDiff < diff) {
+        returnNote = array[i];
+      }
+    };
+    return returnNote;
   }
 
   createNote(num){
