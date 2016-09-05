@@ -51,25 +51,26 @@ class Activity {
     this.song.stop();
   }
 
-  markerIterator(latLng, delay){
-    let marker = this.marker
-    //let ll = new google.maps.LatLng(latLng);
-    //let ll = latLng;
-    if(delay === 0 ){
-      marker.setPosition(ll);
-    } else {
-      window.setTimeout(function(){
-        marker.setPosition(ll);
-      }, delay);
-    }
+  markerIterator(){
+    this.dropMarker(this.latLngs[0]);
+    let self = this;
+    let id = window.setInterval(function(){
+      self.moveMarker(self.latLngs[self.song.index]);
+      console.log(self.song.index);
+    }, 100);
   }
 
-  addMarker(map, latLng){
-    let ll = new google.maps.LatLng(latLng);
-    return new google.maps.Marker({
+  dropMarker(latLng){
+    let ll = new google.maps.LatLng(latLng.lat, latLng.lng);
+    this.marker = new google.maps.Marker({
       position: ll,
       map: map
     });
+  }
+
+  moveMarker(latLng){
+    let ll = new google.maps.LatLng(latLng.lat, latLng.lng);
+    this.marker.setPosition(ll);
   }
 
   getSongData(data){
@@ -116,6 +117,7 @@ class Activity {
     let options = this.mapOptions;
     map = new google.maps.Map(document.querySelector('#map'), options);
     this.drawRoute();
+    this.markerIterator();
   }
 }
 
