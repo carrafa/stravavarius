@@ -48,9 +48,6 @@ class Song {
     Tone.Transport.start();
   }
 
-  playNote(note, delay, noteLength){
-  }
-
   convertLatToNote(lat){
     let l = lat.toString();
     let n = l.substr(l.length - 3, l.length);
@@ -58,10 +55,9 @@ class Song {
   }
 
   stop(){
-    console.log('hi');
-    for(var i = 0; i < this.notes.length; i ++ ){
-      this.notes[i].pause();
-    }
+    this.instruments.synth.dispose();
+    this.loop.stop();
+    this.loop.dispose();
   }
 
 }

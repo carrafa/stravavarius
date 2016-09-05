@@ -1,5 +1,5 @@
 const Song = require('./song.js');
-let loadMap = require('./map.js');
+let map;
 
 class Activity {
 
@@ -12,10 +12,11 @@ class Activity {
       center: this.latLngs[0],
       zoom: 15
     };
-    loadMap(this.mapOptions);
+    this.loadMap();
   }
 
-  addPoints (points){
+  drawHeatmap (){
+    let points = this.latLngs;
     let heatmapData = [];
     for(var i = 0; i < points.length; i++ ){
       heatmapData.push(new google.maps.LatLng( points[i].lat, points[i].lng ));
@@ -24,23 +25,36 @@ class Activity {
       data: heatmapData,
       radius: 5
     });
-    heatmap.setMap(this.map);
-    this.playSong();
+    heatmap.setMap(map);
+  }
+
+  drawRoute(){
+    console.log('drawing route');
+    let coords = this.latLngs;
+    this.path = new google.maps.Polyline({
+      path: coords,
+      geodesic: true,
+      strokeColor: "#FF0000",
+      strokeOpacity: 1.0,
+      strokeWeight: 2
+    });
+    this.path.setMap(map);
   }
 
   playSong (){
     let songData = this.getSongData(this.data);
     this.song = new Song(songData);
     this.song.playSong();
-    //for(let i = 0; i < this.latLngs.length; i++ ){
-      //this.markerIterator(this.latLngs[i], i * 180);
-    //}
+  }
+
+  stopSong(){
+    this.song.stop();
   }
 
   markerIterator(latLng, delay){
     let marker = this.marker
     //let ll = new google.maps.LatLng(latLng);
-    let ll = latLng;
+    //let ll = latLng;
     if(delay === 0 ){
       marker.setPosition(ll);
     } else {
@@ -77,10 +91,32 @@ class Activity {
     return a;
   }
 
-  stopSong(){
-    this.song.stop();
+  loadMap(callback) {
+    if( map === undefined ) {
+      let key = "AIzaSyClUt1HHvi5XFKUcXfYx6QwBl6ktpz6_Ww";
+      let rightPanel = document.querySelector('#content > .panel.right');
+      let mapEl = document.createElement('div');
+      mapEl.id = 'map';
+      rightPanel.appendChild(mapEl);
+
+      let self = this;
+      google.load('maps', '3', {
+        'other_params': 'key=' + key + '&libraries=visualization',
+        'callback': self.initMap.bind(self)
+      });
+
+    } else {
+      console.log('map already loaded');
+      map.setCenter(this.mapOptions.center);
+      this.drawRoute();
+    }
   }
 
+  initMap(){
+    let options = this.mapOptions;
+    map = new google.maps.Map(document.querySelector('#map'), options);
+    this.drawRoute();
+  }
 }
 
 module.exports = Activity;
