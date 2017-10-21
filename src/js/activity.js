@@ -70,7 +70,6 @@ class Activity {
     image.url = this.athlete.profile;
     image.size = new google.maps.Size(30, 30);
     image.scaledSize = new google.maps.Size(30, 30);
-    console.log('image', image);
     this.marker = new google.maps.Marker({
       position: ll,
       map: map,

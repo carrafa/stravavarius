@@ -1,13 +1,13 @@
 'use strict'
 
-const koa         =   require('koa');
-const app         =   koa();
+const Koa         =   require('koa');
+const app         =   new Koa();
 const bodyParser  =   require('koa-bodyparser');
 const logger      =   require('koa-logger');
 const serve       =   require('koa-static');
 const session     =   require('koa-session');
 const path        =   require('path');
-const router      =   require('./api/router.js');
+const router      =   require('./router.js');
 const dist        =   path.resolve(__dirname, "../dist");
 
 app.keys = ['some_long_taco_string'];
@@ -22,7 +22,7 @@ app.use(session(app));
 app.use(serve(dist));
 
 // routes
-app.use(router.routes());
+app.use(router);
 
 // listen
 var port = 8080;

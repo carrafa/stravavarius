@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function(){
   document.querySelector('#activities').addEventListener('click', nav.activities);
   nav.activities();
   introSong();
+  toggleLogin();
  });
 
 function introSong(){ 
@@ -16,3 +17,12 @@ function introSong(){
   song.playSong();
 }
 
+function toggleLogin() {
+  if(!nav.athlete) {
+    document.getElementById('login').display = 'block';
+    document.getElementById('content').display = 'none';
+  } else {
+    document.getElementById('login').display = 'none';
+    document.getElementById('content').display = 'block';
+  }
+}

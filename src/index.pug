@@ -1,0 +1,11 @@
+html
+  head
+    include ./pug/head.pug
+  body
+    include ./pug/header.pug
+    #login
+      a(href="https://www.strava.com/oauth/authorize?client_id=11194&response_type=code&redirect_uri=http://localhost:8080/api/strava/authorize") login with strava
+    #content
+      .panel.left
+      .panel.right
+

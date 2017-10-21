@@ -2,17 +2,19 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: ['./src/js/app.js'],
   output: {
-    filename: './dist/js/app.js'
+    path: __dirname + '/dist',
+    filename: './js/app.js'
   },
   module: {
-    loaders: [{
+    rules: [{
         test: /\.js?$/,
         loader: 'babel-loader',
-        exclue: /node_modules/
+        exclude: /node_modules/
       }, {
         test: /\.pug$/,
         loader: 'pug-loader',
@@ -20,7 +22,10 @@ module.exports = {
       }
     ]
   },
+  resolve: {
+    extensions: ['.js', '.pug']
+  },
   plugins: [
-    //new webpack.optimize.UglifyJsPlugin({compress: {warnings: false } })
+    new HtmlWebpackPlugin({template: 'src/index.pug'})
   ]
 };
